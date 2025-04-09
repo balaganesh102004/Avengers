@@ -16,7 +16,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Airplay, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 const Dashboard: React.FC = () => {
   const { 

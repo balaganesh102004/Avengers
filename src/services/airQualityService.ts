@@ -1,5 +1,4 @@
-
-import { toast } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 // Types for air quality data
 export interface AirQualityData {

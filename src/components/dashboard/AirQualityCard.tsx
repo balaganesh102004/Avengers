@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -90,7 +89,7 @@ const AirQualityCard: React.FC<AirQualityCardProps> = ({ data, isLoading = false
         <Progress 
           value={(data.aqi / 300) * 100} 
           className="h-2" 
-          indicatorClassName={aqiCategoryColors[aqiCategory].progress} 
+          indicator={aqiCategoryColors[aqiCategory].progress} 
         />
         
         <div className="grid grid-cols-3 gap-2 mt-4">
