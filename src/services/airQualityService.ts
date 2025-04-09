@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 
 // Types for air quality data
@@ -328,8 +327,9 @@ const generateMockDataForLocation = (location: string): typeof mockLocations.Bed
     };
   });
 
-  // Random weather conditions - fixed to match the required union type
+  // Define the possible conditions that match the WeatherData type
   const conditions: Array<'sunny' | 'cloudy' | 'rainy' | 'stormy' | 'snowy'> = ['sunny', 'cloudy', 'rainy', 'stormy', 'snowy'];
+  // Ensure we select a valid condition from the conditions array
   const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
   
   return {
@@ -339,7 +339,7 @@ const generateMockDataForLocation = (location: string): typeof mockLocations.Bed
       humidity: Math.floor(Math.random() * 50) + 30, // 30-80%
       windSpeed: Math.random() * 5 + 1, // 1-6 m/s
       windDirection: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.floor(Math.random() * 8)],
-      condition: randomCondition, // Now using typed union value
+      condition: randomCondition, // Now we're using a value from the typed array
       timestamp: new Date().toISOString()
     }
   };
