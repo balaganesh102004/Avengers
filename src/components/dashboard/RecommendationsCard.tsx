@@ -2,10 +2,11 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AirQualityRecommendation } from "@/services/airQualityService";
-import { Wind, Droplets, Brain, Lightbulb, Check, AlertTriangle, ShieldAlert } from "lucide-react";
+import { Wind, Droplets, Brain, Lightbulb, Check, AlertTriangle, ShieldAlert, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 interface RecommendationsCardProps {
   data?: AirQualityRecommendation[];
@@ -81,35 +82,62 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
     }
   };
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
+
   return (
-    <Card className="bg-white shadow-md border border-gray-100">
+    <Card className="bg-white shadow-lg border border-gray-100 overflow-hidden">
+      <div className="h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center text-gray-800">
           <Brain className="h-5 w-5 text-blue-500 mr-2" />
           <span>Health Recommendations</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-        {data.map((recommendation) => (
-          <div 
-            key={recommendation.id} 
-            className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 border border-gray-100 hover:shadow-sm transition-all"
-          >
-            <div className="flex-shrink-0 bg-white p-2 rounded-full shadow-sm">
-              {getCategoryIcon(recommendation.category)}
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <h4 className="font-medium text-gray-900">{recommendation.title}</h4>
-                <Badge variant="outline" className={cn("text-xs flex items-center", getImpactColor(recommendation.impact))}>
-                  {getImpactIcon(recommendation.impact)}
-                  <span>{recommendation.impact} impact</span>
-                </Badge>
+      <CardContent className="space-y-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-2">
+        <motion.div 
+          className="space-y-3"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
+          {data.map((recommendation) => (
+            <motion.div 
+              key={recommendation.id} 
+              className="flex items-start space-x-3 p-4 rounded-lg bg-gradient-to-r from-gray-50 to-white border border-gray-100 hover:shadow-md transition-all cursor-pointer group"
+              variants={item}
+            >
+              <div className="flex-shrink-0 bg-white p-2 rounded-full shadow-sm">
+                {getCategoryIcon(recommendation.category)}
               </div>
-              <p className="text-sm text-gray-600">{recommendation.description}</p>
-            </div>
-          </div>
-        ))}
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors flex items-center">
+                    {recommendation.title}
+                    <ExternalLink className="h-3.5 w-3.5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </h4>
+                  <Badge variant="outline" className={cn("text-xs flex items-center", getImpactColor(recommendation.impact))}>
+                    {getImpactIcon(recommendation.impact)}
+                    <span>{recommendation.impact} impact</span>
+                  </Badge>
+                </div>
+                <p className="text-sm text-gray-600">{recommendation.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </CardContent>
     </Card>
   );
