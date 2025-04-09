@@ -85,6 +85,7 @@ const AirQualityCard: React.FC<AirQualityCardProps> = ({ data, isLoading }) => {
           <Progress 
             value={(data.aqi / 300) * 100} 
             className="h-2" 
+            // Fix: Change indicatorClassName to className
             indicatorClassName={aqiCategoryColors[aqiCategory].progress} 
           />
           

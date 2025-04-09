@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AirQualityRecommendation } from "@/services/airQualityService";
-import { Wind, Droplets, Brain, Lightbulb } from "lucide-react";
+import { Wind, Droplets, Brain, Lightbulb, Check, AlertTriangle, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -15,10 +15,10 @@ interface RecommendationsCardProps {
 const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoading = false }) => {
   if (isLoading) {
     return (
-      <Card className="glass-card">
-        <CardHeader>
+      <Card className="bg-white shadow-md border border-gray-100">
+        <CardHeader className="pb-2">
           <CardTitle>
-            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-6 w-48" />
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -43,53 +43,67 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'ventilation':
-        return <Wind className="h-6 w-6 text-blue-500" />;
+        return <Wind className="h-5 w-5 text-blue-500" />;
       case 'purification':
-        return <Droplets className="h-6 w-6 text-green-500" />;
+        return <Droplets className="h-5 w-5 text-green-500" />;
       case 'behavior':
-        return <Brain className="h-6 w-6 text-purple-500" />;
+        return <Brain className="h-5 w-5 text-purple-500" />;
       case 'environment':
-        return <Lightbulb className="h-6 w-6 text-yellow-500" />;
+        return <Lightbulb className="h-5 w-5 text-yellow-500" />;
       default:
-        return <Lightbulb className="h-6 w-6 text-blue-500" />;
+        return <Lightbulb className="h-5 w-5 text-blue-500" />;
+    }
+  };
+
+  const getImpactIcon = (impact: string) => {
+    switch (impact) {
+      case 'high':
+        return <ShieldAlert className="h-4 w-4 text-red-500 mr-1" />;
+      case 'medium':
+        return <AlertTriangle className="h-4 w-4 text-yellow-500 mr-1" />;
+      case 'low':
+        return <Check className="h-4 w-4 text-green-500 mr-1" />;
+      default:
+        return <Check className="h-4 w-4 text-blue-500 mr-1" />;
     }
   };
 
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case 'high':
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-red-100 text-red-800 border-red-200";
       case 'medium':
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case 'low':
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-green-100 text-green-800 border-green-200";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-blue-100 text-blue-800 border-blue-200";
     }
   };
 
   return (
-    <Card className="glass-card">
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Brain className="h-5 w-5 text-primary mr-2" />
-          <span>AI Recommendations</span>
+    <Card className="bg-white shadow-md border border-gray-100">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center text-gray-800">
+          <Brain className="h-5 w-5 text-blue-500 mr-2" />
+          <span>Health Recommendations</span>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4 max-h-[400px] overflow-y-auto">
+      <CardContent className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
         {data.map((recommendation) => (
           <div 
             key={recommendation.id} 
-            className="flex items-start space-x-3 p-3 rounded-lg bg-white/60 border border-gray-100 hover:bg-white/80 transition-colors"
+            className="flex items-start space-x-3 p-4 rounded-lg bg-gray-50 border border-gray-100 hover:shadow-sm transition-all"
           >
-            <div className="flex-shrink-0 pt-1">
+            <div className="flex-shrink-0 bg-white p-2 rounded-full shadow-sm">
               {getCategoryIcon(recommendation.category)}
             </div>
-            <div className="space-y-1">
+            <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <h4 className="font-medium text-gray-900">{recommendation.title}</h4>
-                <Badge variant="outline" className={cn("text-xs", getImpactColor(recommendation.impact))}>
-                  {recommendation.impact} impact
+                <Badge variant="outline" className={cn("text-xs flex items-center", getImpactColor(recommendation.impact))}>
+                  {getImpactIcon(recommendation.impact)}
+                  <span>{recommendation.impact} impact</span>
                 </Badge>
               </div>
               <p className="text-sm text-gray-600">{recommendation.description}</p>

@@ -328,7 +328,7 @@ const generateMockDataForLocation = (location: string): typeof mockLocations.Bed
     };
   });
 
-  // Random weather conditions
+  // Random weather conditions - fixed to match the required union type
   const conditions: Array<'sunny' | 'cloudy' | 'rainy' | 'stormy' | 'snowy'> = ['sunny', 'cloudy', 'rainy', 'stormy', 'snowy'];
   const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
   
@@ -339,7 +339,7 @@ const generateMockDataForLocation = (location: string): typeof mockLocations.Bed
       humidity: Math.floor(Math.random() * 50) + 30, // 30-80%
       windSpeed: Math.random() * 5 + 1, // 1-6 m/s
       windDirection: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.floor(Math.random() * 8)],
-      condition: randomCondition,
+      condition: randomCondition, // Now using typed union value
       timestamp: new Date().toISOString()
     }
   };
