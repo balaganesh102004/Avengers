@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import AirQualityCard from "./AirQualityCard";
 import WeatherCard from "./WeatherCard";
 import AirQualityChart from "./AirQualityChart";
 import RecommendationsCard from "./RecommendationsCard";
+import PollutionMap from "./PollutionMap";
 import {
   getCurrentAirQuality,
   getHistoricalAirQuality,
@@ -11,7 +11,7 @@ import {
   getAirQualityRecommendations,
 } from "@/services/airQualityService";
 import { useQuery } from "@tanstack/react-query";
-import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets } from "lucide-react";
+import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets, Map } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
@@ -202,6 +202,15 @@ const Dashboard: React.FC = () => {
             </h2>
             <WeatherCard data={weatherData} isLoading={isLoadingWeather} />
           </div>
+        </div>
+
+        {/* Pollution Map */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+            <Map className="h-5 w-5 text-blue-500 mr-2" />
+            Pollution Map
+          </h2>
+          <PollutionMap location={location} isLoading={isLoadingCurrent} />
         </div>
 
         {/* Detailed Metrics */}
