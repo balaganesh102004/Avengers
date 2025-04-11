@@ -1,13 +1,13 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AirQualityData } from "@/services/airQualityService";
+import { AirQualityData, HistoricalAirQualityData } from "@/services/airQualityService";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 import { format, parseISO } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface AirQualityChartProps {
-  data?: AirQualityData[];
+  data?: HistoricalAirQualityData | AirQualityData[];
   isLoading?: boolean;
 }
 
@@ -27,16 +27,22 @@ const AirQualityChart: React.FC<AirQualityChartProps> = ({ data, isLoading = fal
     );
   }
 
-  if (!data || data.length === 0) {
+  if (!data) {
     return null;
   }
 
-  const chartData = data
-    .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-    .map((item) => ({
-      ...item,
-      formattedTime: format(parseISO(item.timestamp), "h:mm a"),
-    }));
+  // Process the data depending on its format
+  const chartData = Array.isArray(data) 
+    ? data.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+        .map((item) => ({
+          ...item,
+          formattedTime: format(parseISO(item.timestamp), "h:mm a"),
+        }))
+    : data.data.map(item => ({
+        aqi: item.aqi,
+        timestamp: item.timestamp,
+        formattedTime: format(parseISO(item.timestamp), "h:mm a"),
+      }));
 
   const getAqiColor = (aqi: number) => {
     if (aqi <= 50) return "#4ade80";
@@ -56,18 +62,24 @@ const AirQualityChart: React.FC<AirQualityChartProps> = ({ data, isLoading = fal
               <span>AQI:</span> 
               <span className="font-medium">{data.aqi}</span>
             </p>
-            <p className="text-gray-700 flex justify-between">
-              <span>PM2.5:</span> 
-              <span className="font-medium">{data.pm25} µg/m³</span>
-            </p>
-            <p className="text-gray-700 flex justify-between">
-              <span>PM10:</span> 
-              <span className="font-medium">{data.pm10} µg/m³</span>
-            </p>
-            <p className="text-gray-700 flex justify-between">
-              <span>O₃:</span> 
-              <span className="font-medium">{data.o3} ppb</span>
-            </p>
+            {data.pm25 && (
+              <p className="text-gray-700 flex justify-between">
+                <span>PM2.5:</span> 
+                <span className="font-medium">{data.pm25} µg/m³</span>
+              </p>
+            )}
+            {data.pm10 && (
+              <p className="text-gray-700 flex justify-between">
+                <span>PM10:</span> 
+                <span className="font-medium">{data.pm10} µg/m³</span>
+              </p>
+            )}
+            {data.o3 && (
+              <p className="text-gray-700 flex justify-between">
+                <span>O₃:</span> 
+                <span className="font-medium">{data.o3} ppb</span>
+              </p>
+            )}
           </div>
         </div>
       );
@@ -112,16 +124,18 @@ const AirQualityChart: React.FC<AirQualityChartProps> = ({ data, isLoading = fal
                 dot={{ fill: "#3b82f6", r: 4, strokeWidth: 1, stroke: "#fff" }}
                 activeDot={{ r: 6, fill: "#2563eb", stroke: "#fff", strokeWidth: 2 }}
               />
-              <Line
-                type="monotone"
-                name="PM2.5"
-                dataKey="pm25"
-                stroke="#64748b"
-                strokeWidth={2}
-                dot={{ fill: "#64748b", r: 3 }}
-                activeDot={{ r: 5, fill: "#475569" }}
-                strokeDasharray="5 5"
-              />
+              {chartData[0]?.pm25 && (
+                <Line
+                  type="monotone"
+                  name="PM2.5"
+                  dataKey="pm25"
+                  stroke="#64748b"
+                  strokeWidth={2}
+                  dot={{ fill: "#64748b", r: 3 }}
+                  activeDot={{ r: 5, fill: "#475569" }}
+                  strokeDasharray="5 5"
+                />
+              )}
             </LineChart>
           </ResponsiveContainer>
         </div>

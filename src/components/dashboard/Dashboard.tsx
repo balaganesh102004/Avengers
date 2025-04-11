@@ -12,7 +12,7 @@ import {
   AirQualityRecommendation,
 } from "@/services/airQualityService";
 import { useQuery } from "@tanstack/react-query";
-import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets, Brain, Map, Factory, Car } from "lucide-react";
+import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets, Brain, Map, Factory, Car, TrafficCone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
