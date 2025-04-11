@@ -72,10 +72,13 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case 'high':
+      case 'High':
         return "bg-red-100 text-red-800 border-red-200";
       case 'medium':
+      case 'Medium':
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case 'low':
+      case 'Low':
         return "bg-green-100 text-green-800 border-green-200";
       default:
         return "bg-blue-100 text-blue-800 border-blue-200";
@@ -120,7 +123,7 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
               variants={item}
             >
               <div className="flex-shrink-0 bg-white p-2 rounded-full shadow-sm">
-                {getCategoryIcon(recommendation.category)}
+                {getCategoryIcon(recommendation.category.toLowerCase())}
               </div>
               <div className="space-y-2 flex-1">
                 <div className="flex items-center justify-between">
@@ -128,9 +131,9 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
                     {recommendation.title}
                     <ExternalLink className="h-3.5 w-3.5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </h4>
-                  <Badge variant="outline" className={cn("text-xs flex items-center", getImpactColor(recommendation.impact))}>
-                    {getImpactIcon(recommendation.impact)}
-                    <span>{recommendation.impact} impact</span>
+                  <Badge variant="outline" className={cn("text-xs flex items-center", getImpactColor(recommendation.importance))}>
+                    {getImpactIcon(recommendation.importance.toLowerCase())}
+                    <span>{recommendation.importance} impact</span>
                   </Badge>
                 </div>
                 <p className="text-sm text-gray-600">{recommendation.description}</p>

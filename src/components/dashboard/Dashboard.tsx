@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import AirQualityCard from "./AirQualityCard";
 import WeatherCard from "./WeatherCard";
@@ -9,6 +10,7 @@ import {
   getHistoricalAirQuality,
   getCurrentWeather,
   getAirQualityRecommendations,
+  AirQualityRecommendation,
 } from "@/services/airQualityService";
 import { useQuery } from "@tanstack/react-query";
 import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets, Map } from "lucide-react";
@@ -60,13 +62,16 @@ const Dashboard: React.FC = () => {
   });
 
   const { 
-    data: recommendations,
+    data: recommendationsResponse,
     isLoading: isLoadingRecommendations,
     refetch: refetchRecommendations
   } = useQuery({
     queryKey: ['recommendations', location],
     queryFn: () => getAirQualityRecommendations(location)
   });
+
+  // Extract recommendations array from the response
+  const recommendations = recommendationsResponse?.recommendations;
 
   const refreshAllData = () => {
     refetchCurrent();

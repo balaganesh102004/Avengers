@@ -44,12 +44,32 @@ export interface Recommendation {
   importance: "Low" | "Medium" | "High";
 }
 
+// Adding this type alias for RecommendationsCard
+export type AirQualityRecommendation = Recommendation;
+
 export interface RecommendationsResponse {
   recommendations: Recommendation[];
   location: string;
   timestamp: string;
 }
 
+// Export this function for use in AirQualityCard
+export function getAirQualityCategory(aqi: number): "good" | "moderate" | "unhealthy" | "hazardous" {
+  if (aqi <= 50) return "good";
+  if (aqi <= 100) return "moderate";
+  if (aqi <= 150) return "unhealthy";
+  return "hazardous";
+}
+
+// Add this function for use in AirQualityCard
+export function getAirQualityDescription(aqi: number): string {
+  if (aqi <= 50) return "Air quality is satisfactory and poses little or no risk.";
+  if (aqi <= 100) return "Air quality is acceptable; however, there may be a risk for some people.";
+  if (aqi <= 150) return "Members of sensitive groups may experience health effects.";
+  return "Health alert: everyone may experience more serious health effects.";
+}
+
+// Keep the original getAqiCategory for internal usage (removing the duplicate at the end)
 function getAqiCategory(aqi: number): "Good" | "Moderate" | "Unhealthy" | "Hazardous" {
   if (aqi <= 50) return "Good";
   if (aqi <= 100) return "Moderate";
@@ -228,11 +248,4 @@ export const getAirQualityRecommendations = async (location: string): Promise<Re
 
 function simulateNetworkDelay(): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, Math.random() * 800 + 200));
-}
-
-function getAqiCategory(aqi: number): "Good" | "Moderate" | "Unhealthy" | "Hazardous" {
-  if (aqi <= 50) return "Good";
-  if (aqi <= 100) return "Moderate";
-  if (aqi <= 150) return "Unhealthy";
-  return "Hazardous";
 }
