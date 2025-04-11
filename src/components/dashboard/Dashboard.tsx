@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import AirQualityCard from "./AirQualityCard";
 import WeatherCard from "./WeatherCard";
@@ -13,7 +12,7 @@ import {
   AirQualityRecommendation,
 } from "@/services/airQualityService";
 import { useQuery } from "@tanstack/react-query";
-import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets, Map } from "lucide-react";
+import { Airplay, RefreshCw, MapPin, Search, Info, AlertTriangle, Thermometer, Wind, Droplets, Brain, Map, Factory, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
@@ -70,7 +69,6 @@ const Dashboard: React.FC = () => {
     queryFn: () => getAirQualityRecommendations(location)
   });
 
-  // Extract recommendations array from the response
   const recommendations = recommendationsResponse?.recommendations;
 
   const refreshAllData = () => {
@@ -95,7 +93,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-4 px-4 shadow-md">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">
@@ -115,7 +112,6 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Search bar with blue background */}
       <div className="bg-blue-700 py-6 px-4 shadow-md">
         <div className="container mx-auto">
           <Form {...form}>
@@ -153,7 +149,6 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* AQI Explanation */}
         <div className="mb-8 bg-white rounded-lg shadow-md p-4">
           <div className="flex items-center mb-3">
             <Info className="h-5 w-5 text-blue-500 mr-2" />
@@ -191,7 +186,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Current AQI and Weather */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="md:col-span-1">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
@@ -209,7 +203,6 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Pollution Map */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
             <Map className="h-5 w-5 text-blue-500 mr-2" />
@@ -218,7 +211,6 @@ const Dashboard: React.FC = () => {
           <PollutionMap location={location} isLoading={isLoadingCurrent} />
         </div>
 
-        {/* Detailed Metrics */}
         {currentAirQuality && !isLoadingCurrent && (
           <div className="mb-8 bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
@@ -262,7 +254,6 @@ const Dashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Historical Data and Recommendations */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
@@ -273,14 +264,17 @@ const Dashboard: React.FC = () => {
           </div>
           <div>
             <h2 className="text-xl font-semibold mb-4 text-gray-800 flex items-center">
-              <Thermometer className="h-5 w-5 text-blue-500 mr-2" />
-              Air Quality Recommendations
+              <div className="flex items-center">
+                <Brain className="h-5 w-5 text-blue-500 mr-1" />
+                <Factory className="h-5 w-5 text-slate-500 mr-1" />
+                <Car className="h-5 w-5 text-indigo-500 mr-2" />
+              </div>
+              Recommendations & Preemptive Measures
             </h2>
             <RecommendationsCard data={recommendations} isLoading={isLoadingRecommendations} />
           </div>
         </div>
 
-        {/* Footer */}
         <div className="mt-12 py-4 border-t border-gray-200 text-center text-gray-600 text-sm">
           <p>© 2025 AQI.in Clone. Air Quality data for information purposes only.</p>
           <p className="mt-1">

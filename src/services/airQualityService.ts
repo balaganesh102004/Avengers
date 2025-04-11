@@ -40,7 +40,7 @@ export interface Recommendation {
   id: string;
   title: string;
   description: string;
-  category: "Health" | "Activity" | "Home" | "Travel";
+  category: "Health" | "Activity" | "Home" | "Travel" | "Traffic" | "Industrial";
   importance: "Low" | "Medium" | "High";
 }
 
@@ -196,6 +196,7 @@ export const getAirQualityRecommendations = async (location: string): Promise<Re
 
     const recommendations: Recommendation[] = [];
 
+    // Health recommendations
     if (category === "Unhealthy" || category === "Hazardous") {
       recommendations.push({
         id: "health-001",
@@ -216,6 +217,7 @@ export const getAirQualityRecommendations = async (location: string): Promise<Re
       });
     }
 
+    // Home recommendations
     recommendations.push({
       id: "home-001",
       category: "Home",
@@ -224,6 +226,7 @@ export const getAirQualityRecommendations = async (location: string): Promise<Re
       description: "Using an air purifier can help improve indoor air quality."
     });
 
+    // Activity recommendations
     if (aqi > 50) {
       recommendations.push({
         id: "activity-001",
@@ -232,6 +235,46 @@ export const getAirQualityRecommendations = async (location: string): Promise<Re
         title: "Choose Less Strenuous Activities",
         description: "On days with moderate to high AQI, opt for less intense physical activities."
       });
+    }
+
+    // Traffic management recommendations
+    if (aqi > 100) {
+      recommendations.push({
+        id: "traffic-001",
+        category: "Traffic",
+        importance: "High",
+        title: "Reroute Heavy Traffic",
+        description: "Suggest alternative routes for heavy vehicles to reduce concentrated emissions in high-pollution areas."
+      });
+      
+      recommendations.push({
+        id: "traffic-002",
+        category: "Traffic",
+        importance: "Medium",
+        title: "Implement Odd-Even Rule",
+        description: "Consider temporary implementation of odd-even vehicle number plate rules to reduce overall traffic volume."
+      });
+    }
+
+    // Industrial output recommendations
+    if (aqi > 75) {
+      recommendations.push({
+        id: "industrial-001",
+        category: "Industrial",
+        importance: "High",
+        title: "Reduce Factory Outputs",
+        description: "Temporarily reduce industrial output from factories in affected areas until air quality improves."
+      });
+      
+      if (aqi > 150) {
+        recommendations.push({
+          id: "industrial-002",
+          category: "Industrial",
+          importance: "High",
+          title: "Suspend Non-Essential Operations",
+          description: "Consider temporary suspension of non-essential industrial operations in severely affected areas."
+        });
+      }
     }
 
     return {

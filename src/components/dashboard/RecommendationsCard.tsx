@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AirQualityRecommendation } from "@/services/airQualityService";
-import { Wind, Droplets, Brain, Lightbulb, Check, AlertTriangle, ShieldAlert, ExternalLink } from "lucide-react";
+import { Wind, Droplets, Brain, Lightbulb, Check, AlertTriangle, ShieldAlert, ExternalLink, Factory, Car, TrafficCone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -51,6 +51,12 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
         return <Brain className="h-5 w-5 text-purple-500" />;
       case 'environment':
         return <Lightbulb className="h-5 w-5 text-yellow-500" />;
+      case 'traffic':
+        return <TrafficCone className="h-5 w-5 text-orange-500" />;
+      case 'industrial':
+        return <Factory className="h-5 w-5 text-slate-500" />;
+      case 'transport':
+        return <Car className="h-5 w-5 text-indigo-500" />;
       default:
         return <Lightbulb className="h-5 w-5 text-blue-500" />;
     }
@@ -106,7 +112,7 @@ const RecommendationsCard: React.FC<RecommendationsCardProps> = ({ data, isLoadi
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center text-gray-800">
           <Brain className="h-5 w-5 text-blue-500 mr-2" />
-          <span>Health Recommendations</span>
+          <span>Health & Environmental Recommendations</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3 max-h-[450px] overflow-y-auto custom-scrollbar pr-2">
